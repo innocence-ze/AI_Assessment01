@@ -1,2 +1,2 @@
-# GA
+# RBS
  assessment of AI(MAT501)
