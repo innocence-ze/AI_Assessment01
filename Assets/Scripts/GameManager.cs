@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     private static GameManager singleton = null;
 
+    public int failScore;
+
     int score = 0;
 
     public FishSwarm sardineSwarm;
@@ -29,15 +32,38 @@ public class GameManager : MonoBehaviour
     public GUIStyle MyToggle;
     bool isOpenSetting = false;
 
+    public GameObject defeatPanel;
+
+    TMP_Text text;
+    float survivalTime = 0;
+
+    void Awake()
+    {
+        text = defeatPanel.transform.Find("Score").GetComponent<TMP_Text>();
+    }
+
+    private void Update()
+    {
+        if (score >= failScore)
+        {
+            defeatPanel.SetActive(true);
+            text.text = "Survive Time: " + string.Format("{0:N2}", survivalTime);
+        }
+        else
+        {
+            survivalTime += Time.deltaTime;
+        }
+    }
 
     public void RestartGame()
     {
-        score = 0;
-        FishSwarm[] swarms = FindObjectsOfType<FishSwarm>();
-        foreach (var s in swarms)
-        {
-            s.InitialSwarm();
-        }
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        //score = 0;
+        //FishSwarm[] swarms = FindObjectsOfType<FishSwarm>();
+        //foreach (var s in swarms)
+        //{
+        //    s.InitialSwarm();
+        //}
     }
 
     public void QuitGame()
